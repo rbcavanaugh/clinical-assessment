@@ -7,18 +7,24 @@
 # download report
 
 library(shiny)
-library(tibble)
-library(dplyr)
-library(ggplot2)
-library(lubridate)
 library(shinyWidgets)
-library(tidyr)
-library(report)
-library(ggdist)
-library(keys)
-library(DT)
-library(rstanarm)
 library(waiter)
+
+check = NULL
+loading_function <- function(){
+  library(tidyr)
+  library(report)
+  library(ggdist)
+  library(keys)
+  library(DT)
+  library(rstanarm)
+  library(dplyr)
+  library(ggplot2)
+  library(tibble)
+  library(lubridate)
+  check = 1
+  waiter_hide()
+}
 
 # This file holds the instructions. I've organized the text like this so that
 # translating to another language is easy and finding text is easy.
@@ -141,6 +147,10 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
   
+  if(is.null(check)){
+    loading_function()
+  }
+  
   w <- Waiter$new(id = "results_overtime_tab", html = spin_ball(), color = "white")
   m <- Waiter$new(id = "results_tab", html = spin_plus(), color = "white")
   
@@ -154,7 +164,7 @@ server <- function(input, output, session) {
     values$order = tibble(name = sample(files, 20, replace = FALSE))
     values$errorbars = NULL
     values$predline = NULL
-    waiter_hide()
+  
     
     observeEvent(input$image,{
       if(isTruthy(input$randomize)){
