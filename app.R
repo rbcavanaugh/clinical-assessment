@@ -6,6 +6,7 @@
 # cores for rstan
 # make stan model post processing faster
 # waiter
+# upload individual or all files
 
 library(shiny)
 library(tibble)
