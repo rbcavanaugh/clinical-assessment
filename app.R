@@ -5,8 +5,8 @@
 # layout
 # cores for rstan
 # make stan model post processing faster
-# waiter
-# upload individual or all files
+# waiter/progress bar
+# download report
 
 library(shiny)
 library(tibble)
@@ -20,6 +20,7 @@ library(ggdist)
 library(keys)
 library(DT)
 library(rstanarm)
+library(waiter)
 
 # This file holds the instructions. I've organized the text like this so that
 # translating to another language is easy and finding text is easy.
@@ -47,6 +48,7 @@ ui <- fluidPage(
     )
   ),
                 # imports javascript for hotkeys
+                use_waiter(),
                 useKeys(),
                 keysInput("keys", response_keys),
                 keysInput("enter_key", enter),
@@ -138,7 +140,9 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
-
+  w <- Waiter$new(id = "results_overtime_tab", html = spin_ball(), color = "white")
+  w <- Waiter$new(id = "results_tab", html = spin_plus(), color = "white")
+  
     # reactiveValues is like a list where elements of the list can change based on user input
     values = reactiveValues()
     # default starting values
@@ -256,7 +260,7 @@ server <- function(input, output, session) {
         fluidRow(
           column(width = 5,
           fileInput("file1", "",
-                    multiple = F,
+                    multiple = T,
                     accept = c("text/csv",
                                "text/comma-separated-values,text/plain",
                                ".csv")),
@@ -288,6 +292,10 @@ server <- function(input, output, session) {
     
     observeEvent(input$calculate,{
       req(input$file1) # change to validate
+      w$show()
+      on.exit({
+        w$hide()
+      })
       df = results_over_time() %>%
         mutate(response = as.numeric(response),
                time = dense_rank((date)),
@@ -341,11 +349,17 @@ server <- function(input, output, session) {
               date = ifelse(date == min(date), "entry", "exit")) %>%
        pivot_wider(names_from = date, values_from = value) %>%
        mutate(change = exit*num_items - entry*num_items, .keep = "none")
+     
+     
  
     })
     
     observeEvent(input$results_oneday,{
       req(results_data_long())
+      w$show()
+      on.exit({
+        w$hide()
+      })
       df = results_data_long() %>%
         mutate(response = as.numeric(response),
                target = slide_id) 
@@ -437,12 +451,18 @@ server <- function(input, output, session) {
   
   read_data_in <- reactive({
       req(input$file1)
-      df = read.csv(input$file1$datapath,
+      len = nrow(input$file1)
+      df_list = list()
+      for (i in 1:len){
+      df_list[[i]] = read.csv(input$file1$datapath[i],
                      header = input$header,
                      sep = input$sep,
                      quote = input$quote)
+      }
       #print(input$file1$datapath)
-      df
+      df = bind_rows(df_list)
+      rm(df_list)
+      return(df)
   })
   
   results_over_time <- reactive({
@@ -461,6 +481,7 @@ server <- function(input, output, session) {
   
   # outputs a table of the item level responses
   output$results_long <- renderDT({
+    req(values$response)
       results_data_long() %>% select(1:3)
   }, rownames = F)
   
