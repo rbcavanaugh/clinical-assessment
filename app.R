@@ -5,7 +5,6 @@
 # layout
 # cores for rstan
 # make stan model post processing faster
-# waiter/progress bar
 # download report
 
 library(shiny)
@@ -26,6 +25,7 @@ library(waiter)
 # translating to another language is easy and finding text is easy.
 source('R/english_structure.R')
 files = list.files('www/items')
+fake_data = read.csv('data/fakedata.csv')
 
 # These indicate errors (1) and correct responses (2)
 response_keys <- c(
@@ -141,7 +141,7 @@ ui <- fluidPage(
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
   w <- Waiter$new(id = "results_overtime_tab", html = spin_ball(), color = "white")
-  w <- Waiter$new(id = "results_tab", html = spin_plus(), color = "white")
+  m <- Waiter$new(id = "results_tab", html = spin_plus(), color = "white")
   
     # reactiveValues is like a list where elements of the list can change based on user input
     values = reactiveValues()
@@ -356,9 +356,9 @@ server <- function(input, output, session) {
     
     observeEvent(input$results_oneday,{
       req(results_data_long())
-      w$show()
+      m$show()
       on.exit({
-        w$hide()
+        m$hide()
       })
       df = results_data_long() %>%
         mutate(response = as.numeric(response),

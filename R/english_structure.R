@@ -12,19 +12,19 @@ intro3 = "This web-app allows clinicians to easily create a simple assessment pr
 
 instructions1 = "1. Enter a name (or initials, or pseudonym) and ensure the date is correct.*"
 
-instructions2 =  "2. Upload images for the brief assessment. Ideally, at least 10 items are used. Allowable formats are .jpeg, .jpg, .png.* Images can contain any kind of stimuli where a correct response can be scored relatively quickly by the clinician"
+instructions2 =  "2. Upload images for the brief assessment. Ideally, at least 10 items are used. Allowable formats are .jpeg, .jpg, .png.* Images can contain any kind of stimuli where a correct response can be scored relatively quickly by the clinician. There are some sample images already uploaded to test out the application. To use these, simply skip the image upload."
 
 instructions3 =  "3. Select whether to randomize the order of images (recommended, unless a specific order is desired). Click start assessment."
 
 instructions4 =  "4. During the assessment, performance is scored by keypress. 1 for incorrect. 2 for correct. The screen is advanced by hitting 'enter'. Feedback is not shown to participants during the assessment - whether or not to give feedback is left up to the clinician."
 
-instructions5 = "5. After the last image, accuracy is shown and performance on each item is presented in a table. A simple statistical model can provide an estimate of overall accuracy and a level of uncertainty."
+instructions5 = "5. After the last image, accuracy is shown and performance on each item is presented in a table. A simple statistical model can run to provide an estimate of overall accuracy and a level of uncertainty around that estimate."
 
-instructions6 = "6. Click on the 'Effect Sizes' button. If it's the first session, navigate to the download page to download the data. If it is not the first session, upload the file from the previous session. (Each new assessment, upload this file to combine and re-download all the data) (should probably change this)."
+instructions6 = "6. If it's the first session, navigate to the download page to download the data. That's it!"
 
-instructions7 = "7. After uploading prior data, effect sizes can be calculated. These include the rate of improvement and the total number of estimated items improved. These effect sizes come with credible intervals, so you can tell if improvement is statistically different than zero."
+instructions7 = "7. If it is not the first session, click on the 'Effect Sizes' button and upload the files from the previous session. After uploading prior data, effect sizes can be calculated. These include the rate of improvement and the total number of estimated items improved. These effect sizes come with credible intervals, so you can tell if improvement is statistically different than zero."
 
-note1 = "Note: This app does not save any data entered by users after the browser window is closed. The name field is only included on the downloadable spreadsheet. This can be verified in the source code, which is openly available. Still, patient privacy is important and risks should be minimized where possible."
+note1 = "*This app does not save any data entered by users after the browser window is closed. The name field is only included on the downloadable spreadsheet. This can be verified in the source code, which is openly available. Still, patient privacy is important and risks should be minimized where possible."
 
 faq1 = "Q: What kind of items or stimuli can I use?  A: Any kind of stimuli where there is a relatively clear correct/incorrect response and you can include at least 10 items. Consider how the stimuli are connected to treatment. Are you doing VNeST for a set of 15 personally relevant verbs? Then there's your stimuli set! Also consider that this assessment should be quick, and not take away from more important uses of clinical time"
 
