@@ -9,13 +9,14 @@
 library(shiny)
 library(shinyWidgets)
 library(waiter)
+library(keys)
+
 
 check = NULL
 loading_function <- function(){
   library(tidyr)
   library(report)
   library(ggdist)
-  library(keys)
   library(DT)
   library(rstanarm)
   library(dplyr)
