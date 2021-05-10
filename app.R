@@ -3,7 +3,6 @@
 # fix calendar issue
 # figure out effect sizes with different items
 # layout
-# cores for rstan
 # make stan model post processing faster
 # download report
 
@@ -49,6 +48,7 @@ ui <- fluidPage(
   ),
                 # imports javascript for hotkeys
                 use_waiter(),
+                waiter_show_on_load(color = "white", html = spin_3circles()),
                 useKeys(),
                 keysInput("keys", response_keys),
                 keysInput("enter_key", enter),
@@ -140,6 +140,7 @@ ui <- fluidPage(
 
 # Define server logic required to draw a histogram
 server <- function(input, output, session) {
+  
   w <- Waiter$new(id = "results_overtime_tab", html = spin_ball(), color = "white")
   m <- Waiter$new(id = "results_tab", html = spin_plus(), color = "white")
   
@@ -153,7 +154,7 @@ server <- function(input, output, session) {
     values$order = tibble(name = sample(files, 20, replace = FALSE))
     values$errorbars = NULL
     values$predline = NULL
-    
+    waiter_hide()
     
     observeEvent(input$image,{
       if(isTruthy(input$randomize)){
